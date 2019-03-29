@@ -74,19 +74,23 @@ export class AppComponent implements OnInit {
     datepicker.close();
   }
 
-  public filteringByMass(event: MouseEvent) {
-    let massValue: number = +event.currentTarget.value;
-    this.tableData = this.tableData.filter((item: Meteor) => {
+  public filteringByMass(event: any) {
+    const massValue: number = event.currentTarget
+      ? parseInt(event.currentTarget.value, 10)
+      : 0;
+
+    this.tableData.data = this.tableData.data.filter((item: Meteor) => {
       return parseFloat(item.mass) >= massValue;
     });
-    if (this.tableData.length === 0) {
-      this.tableData = this.meteorData.filter((item: Meteor) => {
+
+    if (this.tableData.data.length === 0) {
+      this.tableData.data = this.meteorData.filter((item: Meteor) => {
         return parseFloat(item.mass) >= massValue;
       });
 
-      if (this.tableData.length > 0) {
+      if (this.tableData.data.length > 0) {
         this.filterForm.controls.fallYear.setValue(
-          new Date(this.tableData[0].year)
+          new Date(this.tableData.data[0].year)
         );
       }
 
